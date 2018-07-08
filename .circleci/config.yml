@@ -60,19 +60,14 @@ jobs:
          name: Deploy Dev to Firebase
          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P default
   deploy-production:
-    docker:
-      - image: mouse440/trippin-node-8.9
-    working_directory: ~/trippin
+    <<: *defaults
     steps:
-       - checkout
-       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-       - run:
-           name: Deploy Master to Firebase
-           command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P production
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ./
+      - run:
+          name: Deploy Master to Firebase
+          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P production
 workflows:
   version: 2
   build_and_deploy:
