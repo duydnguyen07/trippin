@@ -3,9 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
-jobs:
-  build:
-    docker:
+
+defaults: &defaults
+  working_directory: ~/trippin
+  docker:
       # specify the version you desire here
       - image: mouse440/trippin-node-8.9
       # Specify service dependencies here if necessary
@@ -13,8 +14,9 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/trippin
-
+jobs:
+  build:
+    <<: *defaults
     steps:
       - checkout
 
@@ -35,4 +37,53 @@ jobs:
       # run tests!
       - run: npm run test:ci
 
+      - run: npm run build 
 
+      # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job. 
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is 
+           # taken to be the root directory of the workspace.
+          root: ./
+          # Must be relative path from root
+          paths:
+            - dist
+            - node_modules
+            - firebase.json
+            - .firebaserc
+  deploy-dev:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ./
+      - run:
+         name: Deploy Dev to Firebase
+         command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P default
+  deploy-production:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ./
+      - run:
+          name: Deploy Master to Firebase
+          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P production
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy-dev:
+          context: belo
+          requires:
+              - build
+          filters:
+            branches:
+              only: dev   
+      - deploy-production:
+          context: belo
+          requires:
+              - build
+          filters:
+            branches:
+              only: master    
