@@ -48,6 +48,8 @@ jobs:
           paths:
             - dist
             - node_modules
+            - firebase.json
+            - .firebaserc
   deploy-dev:
     <<: *defaults
     steps:
