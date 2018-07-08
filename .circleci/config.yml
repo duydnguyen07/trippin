@@ -35,33 +35,29 @@ jobs:
       # run tests!
       - run: npm run test:ci
   deploy-dev:
-       docker:
-         - image: circleci/node:8.9
-       working_directory: trippin
        steps:
          - run:
              name: Deploy Dev to Firebase
-             command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P default
+             command: ~/trippin/node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P default
   deploy-production:
-       docker:
-         - image: circleci/node:8.9
-       working_directory: trippin
        steps:
          - run:
              name: Deploy Master to Firebase
-             command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P production
+             command: ~/trippin/node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P production
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - build
       - deploy-dev:
+          context: belo
           requires:
               - build
           filters:
             branches:
               only: dev   
       - deploy-production:
+          context: belo
           requires:
               - build
           filters:
