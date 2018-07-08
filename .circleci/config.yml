@@ -43,16 +43,17 @@ jobs:
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is 
            # taken to be the root directory of the workspace.
-          root: ~/trippin
+          root: ./
           # Must be relative path from root
           paths:
             - dist
+            - node_modules
   deploy-dev:
     <<: *defaults
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: dist
+          at: ./
       - run:
          name: Deploy Dev to Firebase
          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P default
