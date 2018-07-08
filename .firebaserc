@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "trippin-dev",
+    "production": "trippin-7c934"
+  }
+}
