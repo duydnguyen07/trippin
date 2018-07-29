@@ -1,14 +1,11 @@
-.container {}
-
 .hero {
   background: #F2F2F2;
   text-align: center;
-  padding-bottom: 3rem;
+  padding: 7rem 0 10rem;
 }
 
 .logo {
   width: 70px;
-  margin: 3rem auto 0;
 }
 
 h1 {
@@ -18,7 +15,7 @@ h1 {
 .hero__create-container {
   text-align: left;
   width: 500px;
-  margin: 0 auto;
+  margin: 6rem auto 0;
 
   .hero__create-spaced-equal {
     display: flex;
@@ -51,6 +48,7 @@ h1 {
   text-align: center;
   position: relative;
   overflow: hidden;
+  padding: 3rem;
 
   .footer__logo {
     margin: 2rem auto;
@@ -65,6 +63,7 @@ h1 {
 
   .footer__links {
     display: block;
+    margin-top: 1rem;
 
     a {
       color: #C3C3C3;
@@ -80,5 +79,9 @@ h1 {
     font-size: 180px;
     color: rgba(white, 0.1);
     font-family: Roboto, Arial, Helvetica, sans-serif;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5rem;
   }
 }
