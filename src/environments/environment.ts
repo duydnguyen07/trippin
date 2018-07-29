@@ -8,6 +8,14 @@ import env from './.env';
 
 export const environment = {
   production: false,
+  firebase: {
+    apiKey: "AIzaSyAAX1jzSN5nSH5wDbX0TipGzy-vafzYH5g",
+    authDomain: "trippin-dev.firebaseapp.com",
+    databaseURL: "https://trippin-dev.firebaseio.com",
+    projectId: "trippin-dev",
+    storageBucket: "trippin-dev.appspot.com",
+    messagingSenderId: "294857167796"
+  },
   version: env.npm_package_version + '-dev',
   serverUrl: '/api',
   defaultLanguage: 'en-US',
